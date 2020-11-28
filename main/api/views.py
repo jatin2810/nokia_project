@@ -207,7 +207,19 @@ class ProductListView(ModelViewSet):
     serializer_class = ProductListSerializers
     pagination_class = ItemsSetPagination
     
-    
+
+class ProductListView1(CreateAPIView):
+    serializer_class = ProductListSerializers
+    def get(self,format=None):
+        serializer = self.serializer_class()
+        product=Product.objects.all()
+
+        product_list={}
+
+        for item in product:
+            product_list[item.product_id]={'name':item.name}
+        
+        return Response(product_list)
 
    
 
