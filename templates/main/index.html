@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<br><br>
+<div class="container">
+    <div class="row">
+        {% for item in product %}
+
+            <div class="card col-sm-1 col-lg-3 col-md-2  p-1" style="width: 18rem;">
+                <img class="card-img-top" width="400px" height="300px" src="/media/{{item.image}}" alt="Card image cap">
+                <div class="card-body">
+                <p class="card-text" style="text-align: center;">{{item.name}}</p>
+                </div>
+                <div class="m-2" style="text-align: center;">
+                    <a class="btn btn-danger" href="{% url 'main:product_detail' item.product_id %}">Edit Details</a>
+                </div>
+
+            </div>
+
+            <br><br>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+<div class="row pagination-wrap"  style="justify-content: center;">
+
+    <div class="text-center text-md-left">
+          <div class="custom-pagination ml-auto">  
+            {% if product.has_previous %}
+
+              <a href="?page=1" class="prev"><<</a>
+              <a href="?page={{product.previous_page_number }}" class="prev ml-auto">Previous</a>
+            {% endif %}
+            <div class="d-inline-block">
+            {% for num in product.paginator.page_range %}
+              {% if product.number == num %}
+              <button class="btn btn-dark" disabled>{{ num }}</button>
+              {% elif num > product.number|add:'-7' and num < product.number|add:'7' %}
+              <button class="btn btn-light" onclick='location.href="?page={{num}}"'> {{ num }}</button>
+              {% endif %}
+            {% endfor %}
+            </div>
+            {% if product.has_next %}
+              <a href="?page={{ product.next_page_number }}" class="next ml-auto">Next</a>
+              <a href="?page={{ product.paginator.num_pages  }}" class="next ml-auto">>></a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
